@@ -18,7 +18,7 @@ router = Router()
 async def button_press(msg: Message, state: FSMContext):
     """ Начало ввода параметров сначала при нажатии кнопки """
     await state.set_state(User.first_value)
-    await msg.answer('Введи первый параметр - КОЛИЧЕСТВО ЗУБОВ ДЕТАЛИ:')
+    await msg.answer('Введи первый параметр - КОЛИЧЕСТВО ЗУБОВ ДЕТАЛИ (12 или 16):')
 
 
 ################################################ ХЭНДЛЕРЫ #############################################################
@@ -35,7 +35,7 @@ async def process_passage_password(msg: Message, state: FSMContext):
     """ Прохождение пароля """
     if msg.text == 'fraser':
         await state.set_state(User.first_value)
-        await msg.answer('Введи первый параметр - КОЛИЧЕСТВО ЗУБОВ ДЕТАЛИ:')
+        await msg.answer('Введи первый параметр - КОЛИЧЕСТВО ЗУБОВ ДЕТАЛИ (12 или 16):')
     else:
         await msg.answer('Ты ввел неправильный пароль, к сожалению ты не можешь продолжить...')
 
@@ -47,9 +47,9 @@ async def process_first_value(msg: Message, state: FSMContext):
         if int(msg.text) == 12 or int(msg.text) == 16:
             await state.update_data(first_value=int(msg.text))
             await state.set_state(User.second_value)
-            await msg.answer('Введи второй параметр - ТОЧНОСТЬ (КОЛИЧЕСТВО ЗНАКОВ ПОСЛЕ ЗАПЯТОЙ):', reply_markup=await keyboard_user())
+            await msg.answer('Введи второй параметр - ТОЧНОСТЬ (КОЛИЧЕСТВО ЗНАКОВ ПОСЛЕ ЗАПЯТОЙ) (от 3 до 8):', reply_markup=await keyboard_user())
         else:
-            await msg.answer('Ты ввел неправильное значение КОЛИЧЕСТВА ЗУБОВ ДЕТАЛИ.\nЗначение должно входить в диапазон от 12 до 16.\nВведи правильное значение:')
+            await msg.answer('Ты ввел неправильное значение КОЛИЧЕСТВА ЗУБОВ ДЕТАЛИ.\nЗначение должно равно 12 или 16.\nВведи правильное значение:')
     else:
         await msg.answer('Ты ввел неправильное значение КОЛИЧЕСТВА ЗУБОВ ДЕТАЛИ.\nВведи правильное значение:')
 
@@ -61,7 +61,7 @@ async def process_second_value(msg: Message, state: FSMContext):
         if int(msg.text) in [i for i in range(3, 9)]:
             await state.update_data(second_value=int(msg.text))
             await state.set_state(User.third_value)
-            await msg.answer('Введи третий параметр - ПОСТОЯННАЯ ДЕЛИТЕЛЬНАЯ СТАНКА:', reply_markup=await keyboard_user())
+            await msg.answer('Введи третий параметр - ПОСТОЯННАЯ ДЕЛИТЕЛЬНАЯ СТАНКА (18 или 24):', reply_markup=await keyboard_user())
         else:
             await msg.answer('Ты ввел неправильное значение ТОЧНОСТИ (КОЛИЧЕСТВО ЗНАКОВ ПОСЛЕ ЗАПЯТОЙ).\nЗначение должно входить в диапазон от 3 до 8.\nВведи правильное значение:')
     else:
@@ -75,7 +75,7 @@ async def process_third_value(msg: Message, state: FSMContext):
         if int(msg.text) == 18 or int(msg.text) == 24:
             await state.update_data(third_value=int(msg.text))
             await state.set_state(User.fourth_value)
-            await msg.answer('Введи четвертый параметр - КОЛИЧЕСТВО РЕЗУЛЬТАТОВ:', reply_markup=await keyboard_user())
+            await msg.answer('Введи четвертый параметр - КОЛИЧЕСТВО РЕЗУЛЬТАТОВ (от 11 до 100):', reply_markup=await keyboard_user())
         else:
             await msg.answer('Ты ввел неправильное значение ПОСТОЯННОЙ ДЕЛИТЕЛЬНОЙ СТАНКА.\nЗначение может быть равно 18 или 24.\nВведи правильное значение:')
     else:
